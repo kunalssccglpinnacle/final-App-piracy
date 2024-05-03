@@ -26,8 +26,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
-
 class BarcodeScan : AppCompatActivity() {
     private lateinit var binding: ActivityBarcodeScanBinding
     private lateinit var barcodeDetector: BarcodeDetector
@@ -52,12 +50,12 @@ class BarcodeScan : AppCompatActivity() {
                 .setRequestedPreviewSize(1920, 1080)
                 .setAutoFocusEnabled(true)
                 .build()
+
         } catch (e: Exception) {
             e.printStackTrace()
             showToast("Error initializing barcode scanner")
             return
         }
-
         binding.surfaceView.holder.addCallback(object : SurfaceHolder.Callback {
             @SuppressLint("MissingPermission")
             override fun surfaceCreated(holder: SurfaceHolder) {
@@ -71,7 +69,6 @@ class BarcodeScan : AppCompatActivity() {
                     }
                 }
             }
-
             override fun surfaceChanged(
                 holder: SurfaceHolder,
                 format: Int,
@@ -79,7 +76,6 @@ class BarcodeScan : AppCompatActivity() {
                 height: Int
             ) {
             }
-
             override fun surfaceDestroyed(holder: SurfaceHolder) {
                 try {
                     cameraSource.stop()
@@ -90,31 +86,10 @@ class BarcodeScan : AppCompatActivity() {
                 }
             }
         })
-
         barcodeDetector.setProcessor(object : Detector.Processor<Barcode> {
             override fun release() {
                 showToast("Barcode scanner has been stopped")
             }
-
-//            override fun receiveDetections(detections: Detector.Detections<Barcode>) {
-//                val barcodes = detections.detectedItems
-//                if (barcodes.size() > 0) {
-//                    val scannedBarcode = barcodes.valueAt(0).displayValue
-//                    if (scannedBarcode != lastScannedBarcode) {
-//                        addBarcode(scannedBarcode)
-//                        barcodeAdded = true
-//                        lastScannedBarcode = scannedBarcode
-//                        getBarcodeInfo(scannedBarcode)
-//                        binding.txtDetectedItems.text = scannedBarcode
-//                        binding.txtDetectedItems.visibility = View.VISIBLE
-//
-//                        // Vibrate when a new barcode is scanned
-//                        vibrate()
-//                    }
-//                }
-//            }
-
-
             override fun receiveDetections(detections: Detector.Detections<Barcode>) {
                 val barcodes = detections.detectedItems
                 for (i in 0 until barcodes.size()) {
@@ -133,14 +108,8 @@ class BarcodeScan : AppCompatActivity() {
                     }
                 }
             }
-
-
-
-
-
         })
     }
-
     private fun vibrate() {
         val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -150,28 +119,20 @@ class BarcodeScan : AppCompatActivity() {
             vibrator.vibrate(500)
         }
     }
-
-//
-
-
+    @SuppressLint("SuspiciousIndentation")
     private fun getBarcodeInfo(barcode: String){
+
+        binding.txtMessage1.text =""
 
         if (barcode.contains("-")) {
             searchBarr1(barcode)
         }else {
-
-
-
                 val retrofit = Retrofit.Builder()
                     .baseUrl("https://nodei.ssccglpinnacle.com/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(OkHttpClient.Builder().build())
                     .build()
-
-
                 val api = retrofit.create(ApiService::class.java)
-
-
             val call = api.getKey(barcode)
                 call.enqueue(object : Callback<GetKeyResponse> {
                     override fun onResponse(
@@ -187,52 +148,19 @@ class BarcodeScan : AppCompatActivity() {
                             showToast("Failed to get response from server")
                         }}catch (e:Exception){
 
-                            binding.txtMessage1.text = "This Barcode is not belongs to our data base"
-                            binding.txtMessage1.visibility = View.VISIBLE
-
-
-
-
-
+                            binding.txtMessage.text = "This Barcode is not belongs to our data base"
                         }
                     }
-
                     override fun onFailure(call: Call<GetKeyResponse>, t: Throwable) {
                         t.printStackTrace()
                         showToast("Failed to connect to server")
                     }
                 })
             }
-
-
-
-
-
-
     }
-
-
-
     @SuppressLint("SetTextI18n")
-//    private fun showBarcodeInfo(apiResponse: GetKeyResponse?) {
-//        if (apiResponse != null) {
-//            val key = apiResponse.key
-//            runOnUiThread {
-//                binding.txtMessage.text = key
-//                binding.txtMessage.visibility = View.VISIBLE
-//            }
-//            // Call the second API with the key
-//            searchBarr1(key)
-//        } else {
-//            runOnUiThread {
-//                binding.txtMessage.text = "Response is null"
-//                binding.txtMessage.visibility = View.VISIBLE
-//            }
-//        }
-//    }
-
-
     private fun showBarcodeInfo(apiResponse: GetKeyResponse?) {
+        binding.txtMessage.text =""
         if (apiResponse != null) {
             val key = apiResponse.key
             runOnUiThread {
@@ -247,7 +175,6 @@ class BarcodeScan : AppCompatActivity() {
                     binding.txtMessage.setTextColor(Color.BLACK)
                 }
             }
-
             // Call the second API with the key
             searchBarr1(key)
         } else {
@@ -257,20 +184,12 @@ class BarcodeScan : AppCompatActivity() {
             }
         }
     }
-
-
-
-
-
-
-
     private fun searchBarr1(key: String) {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://nodei.ssccglpinnacle.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(OkHttpClient.Builder().build())
             .build()
-
         val api = retrofit.create(ApiService::class.java)
         val call = api.searchBarr1(SearchBarr1Request(key))
         call.enqueue(object : Callback<SearchBarr1Response> {
@@ -284,32 +203,38 @@ class BarcodeScan : AppCompatActivity() {
                     showToast("Failed to get response from api 2")
                 }
             }
-
             override fun onFailure(call: Call<SearchBarr1Response>, t: Throwable) {
                 t.printStackTrace()
                 showToast("Failed to connect to api 2")
             }
         })
     }
-
-
-
     private fun showSearchBarr1Response(response: SearchBarr1Response) {
+        binding.txtMessage1.text = ""
+        binding.txtMessage.text = ""
         val result = response.result
-        val message = "Belongs to : $result\n  "
-
-        val coloredMessage = if (result == "Not Verified") {
-            val spannable = SpannableString(message)
-            spannable.setSpan(ForegroundColorSpan(Color.RED), 11, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            spannable
+        val message = if (result == "Not Verified") {
+            "This book does not belong to any distributor"
         } else {
-            message
+            "Belongs to : $result\n"
+        }
+        val coloredMessage = if (result == "Not Verified") {
+            SpannableString(message).apply {
+                setSpan(ForegroundColorSpan(Color.RED), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+        } else {
+            SpannableString(message)
         }
         runOnUiThread {
             binding.txtMessage1.text = coloredMessage
-            View.VISIBLE.also { binding.txtMessage1.visibility = it }
-
+            binding.txtMessage1.visibility = View.VISIBLE
+            // Set text color of txtMessage based on result
             binding.txtMessage.text = response.result
+            if (result == "Not Verified") {
+                binding.txtMessage.setTextColor(Color.RED)
+            } else {
+                binding.txtMessage.setTextColor(Color.BLACK)
+            }
             binding.txtMessage.visibility = View.VISIBLE
         }
     }
@@ -318,17 +243,12 @@ class BarcodeScan : AppCompatActivity() {
             Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
         }
     }
-
-
   private fun addBarcode(barcode: String) {
-
-
       val retrofit = Retrofit.Builder()
             .baseUrl("https://nodei.ssccglpinnacle.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(OkHttpClient.Builder().build())
             .build()
-
         val api = retrofit.create(ApiService::class.java)
         val call = api.addBarcode(AddBarcodeRequest(barcode))
         call.enqueue(object : Callback<Void> {
@@ -340,50 +260,37 @@ class BarcodeScan : AppCompatActivity() {
                     showToast("Failed to add barcode to the database")
                 }
             }
-
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 t.printStackTrace()
                 showToast("Failed to connect to server barcode api")
             }
         })
     }
-
     private fun getCount(barcode: String) {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://nodei.ssccglpinnacle.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(OkHttpClient.Builder().build())
             .build()
-
         val api = retrofit.create(ApiService::class.java)
         val call = api.getCount(CountRequest(barcode))
-
-
-
-
-
-
-
-
         call.enqueue(object : Callback<CountResponse> {
-//
-
             override fun onResponse(call: Call<CountResponse>, response: Response<CountResponse>) {
+                binding.txtMessage1.text = ""
                 if (response.isSuccessful) {
                     val count = response.body()?.count ?: 0
 
                     val message = if (count <= 5) {
-                        "Barcode scanned $count time so it is Verified"
+                        "Barcode scanned $count times "
                     } else {
                         "Barcode scanned $count times so it is doubtful"
                     }
-
                     val spannable = SpannableString(message)
                     if (count <= 5) {
                         spannable.setSpan(
                             ForegroundColorSpan(Color.GREEN),
-                            message.indexOf("Verified"),
-                            message.indexOf("Verified") + "Verified".length,
+                            message.indexOf(""),
+                            message.indexOf("") + "".length,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                         )
                     } else {
@@ -394,37 +301,23 @@ class BarcodeScan : AppCompatActivity() {
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                         )
                     }
-
                     runOnUiThread {
                         binding.txtCount.text = spannable
                         binding.txtCount.visibility = View.VISIBLE
-
-                        binding.txtMessage1.text = ""
-                        binding.txtMessage1.visibility = View.VISIBLE
                     }
                 }
             }
-
-
-
-
-
             override fun onFailure(call: Call<CountResponse>, t: Throwable) {
                 t.printStackTrace()
                 showToast("Failed to connect to server count : ${t.message}")
-
-
             }
         })
     }
-
-
     override fun onPause() {
         super.onPause()
         cameraSource.release()
         isCameraStarted = false
     }
-
     override fun onResume() {
         super.onResume()
         initBarcodeScanner()

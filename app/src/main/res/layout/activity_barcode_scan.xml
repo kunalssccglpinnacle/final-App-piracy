@@ -10,7 +10,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <!-- Camera Preview SurfaceView -->
         <SurfaceView
             android:id="@+id/surfaceView"
@@ -20,7 +19,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:paddingBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@id/btnAction"
+            app:layout_constraintBottom_toTopOf="@id/btnScan"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,8 +27,7 @@
         <!-- Image Frame -->
         <ImageView
 
-
-
+            android:src="@drawable/barcode"
             android:scaleType="fitXY"
             android:layout_width="350dp"
             android:layout_height="300dp"
@@ -37,11 +35,6 @@
             />
 
     </FrameLayout>
-
-
-
-
-
     <TextView
         android:id="@+id/txtBarcodeValue"
 
@@ -59,7 +52,7 @@
         tools:ignore="NotSibling" />
 
     <Button
-        android:id="@+id/btnAction"
+        android:id="@+id/btnScan"
         android:layout_width="389dp"
         android:layout_height="34dp"
         android:layout_marginBottom="32dp"
@@ -81,7 +74,7 @@
         app:cardElevation="16dp"
         app:cardUseCompatPadding="true"
         tools:ignore="MissingConstraints"
-       >
+        >
 
         <!-- Your card content here -->
         <LinearLayout
@@ -104,7 +97,7 @@
                 android:id="@+id/txtDetectedItems"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Barcode Value"
+                android:text="!!Please scan barcode!!"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -114,7 +107,7 @@
                 android:id="@+id/txtMessage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="!!Please scane barcode!!"
+                android:text=" "
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -124,7 +117,7 @@
                 android:id="@+id/txtCount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text=""
+                android:text=" "
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -140,21 +133,7 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
-
-    <ImageView
-        android:id="@+id/imgBarcode"
-        android:layout_width="387dp"
-        android:layout_height="149dp"
-        android:layout_marginTop="600dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
