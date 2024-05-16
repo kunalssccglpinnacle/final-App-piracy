@@ -120,45 +120,6 @@ class BarcodeScan : AppCompatActivity() {
         }
     }
     @SuppressLint("SuspiciousIndentation")
-//    private fun getBarcodeInfo(barcode: String){
-//
-//        binding.txtMessage1.text =""
-//
-//        if (barcode.contains("-")) {
-//            searchBarr1(barcode)
-//        }else {
-//                val retrofit = Retrofit.Builder()
-//                    .baseUrl("https://nodei.ssccglpinnacle.com/")
-//                    .addConverterFactory(GsonConverterFactory.create())
-//                    .client(OkHttpClient.Builder().build())
-//                    .build()
-//                val api = retrofit.create(ApiService::class.java)
-//            val call = api.getKey(barcode)
-//                call.enqueue(object : Callback<GetKeyResponse> {
-//                    override fun onResponse(
-//                        call: Call<GetKeyResponse>,
-//                        response: Response<GetKeyResponse>
-//                    ) {
-//                        try{if (response.isSuccessful) {
-//                            val result = response.body()
-//                            result?.let {
-//                                showBarcodeInfo(it)
-//                            }
-//                        } else {
-//                            showToast("Failed to get response from server")
-//                        }}catch (e:Exception){
-//
-//                            binding.txtMessage.text = "This Barcode is not belongs to our data base"
-//                        }
-//                    }
-//                    override fun onFailure(call: Call<GetKeyResponse>, t: Throwable) {
-//                        t.printStackTrace()
-//                        showToast("Failed to connect to server")
-//                    }
-//                })
-//            }
-//    }
-
     private fun getBarcodeInfo(barcode: String){
         binding.txtMessage1.text = ""
 
@@ -202,10 +163,6 @@ class BarcodeScan : AppCompatActivity() {
             })
         }
     }
-
-
-
-
     @SuppressLint("SetTextI18n")
     private fun showBarcodeInfo(apiResponse: GetKeyResponse?) {
         binding.txtMessage.text =""
@@ -257,86 +214,14 @@ class BarcodeScan : AppCompatActivity() {
             }
         })
     }
-//    private fun showSearchBarr1Response(response: SearchBarr1Response) {
-//        binding.txtMessage1.text = ""
-//        binding.txtMessage.text = ""
-//        val result = response.result
-//        val message = if (result == "Not Verified") {
-//            "This book does not belong to any distributor"
-//        } else {
-//            "Belongs to : $result\n "
-//        }
-//        val coloredMessage = if (result == "Not Verified") {
-//            SpannableString(message).apply {
-//                setSpan(ForegroundColorSpan(Color.RED), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-//            }
-//        } else {
-//            SpannableString(message)
-//        }
-//        runOnUiThread {
-//            binding.txtMessage1.text = coloredMessage
-//            binding.txtMessage1.visibility = View.VISIBLE
-//            // Set text color of txtMessage based on result
-//            binding.txtMessage.text = response.result
-//            if (result == "Not Verified") {
-//                binding.txtMessage.setTextColor(Color.RED)
-//            } else {
-//                binding.txtMessage.setTextColor(Color.BLACK)
-//            }
-//            binding.txtMessage.visibility = View.VISIBLE
-//        }
-//    }
-
-
-//    private fun showSearchBarr1Response(response: SearchBarr1Response) {
-//        binding.txtMessage1.text = ""
-//        binding.txtMessage.text = ""
-//        val result = response.result
-//        val message = if (result == "Not Verified") {
-//            "This book does not belong to any distributor"
-//        } else {
-//            "Belongs to : $result. Verified\n"
-//        }
-//
-//        val coloredMessage = if (result == "Not Verified") {
-//            SpannableString(message).apply {
-//                setSpan(ForegroundColorSpan(Color.RED), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-//            }
-//        } else {
-//            SpannableString(message).apply {
-//                val verifiedIndex = message.indexOf("Verified")
-//                val verifiedLength = "Verified".length
-//                if (verifiedIndex != -1) { // Check if "Verified" exists in the message
-//                    setSpan(ForegroundColorSpan(Color.GREEN), verifiedIndex, verifiedIndex + verifiedLength, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-//                }
-//            }
-//        }
-//
-//        runOnUiThread {
-//            binding.txtMessage1.text = coloredMessage
-//            binding.txtMessage1.visibility = View.VISIBLE
-//            // Set text color of txtMessage based on result
-//            binding.txtMessage.text = response.result
-//            if (result == "Not Verified") {
-//                binding.txtMessage.setTextColor(Color.RED)
-//            } else {
-//                binding.txtMessage.setTextColor(Color.BLACK)
-//            }
-//            binding.txtMessage.visibility = View.VISIBLE
-//        }
-//    }
-
-
-
     private fun showSearchBarr1Response(response: SearchBarr1Response) {
         binding.txtMessage1.text = ""
         binding.txtMessage.text = ""
         val result = response.result
         val message = if (result == "Not Verified") {
             "This book does not belong to any distributor"
-        }
-        else { ""
-//            "Belongs to : $result. Verified\n"
+        } else {
+            "Belongs to: $result. Verified"
         }
 
         val coloredMessage = if (result == "Not Verified") {
@@ -346,26 +231,14 @@ class BarcodeScan : AppCompatActivity() {
             }
         } else {
             SpannableString(message).apply {
-                // Apply a green color span specifically to the word "Verified" if present
+                // Apply a dark green color span specifically to the word "Verified" if present
                 val verifiedIndex = message.indexOf("Verified")
+
                 if (verifiedIndex != -1) {
-                    setSpan(ForegroundColorSpan(Color.GREEN), verifiedIndex, verifiedIndex + "Verified".length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    setSpan(ForegroundColorSpan(Color.parseColor("#018749")), verifiedIndex, verifiedIndex + "Verified".length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 }
             }
         }
-
-//        runOnUiThread {
-//            binding.txtMessage1.text = coloredMessage
-//            binding.txtMessage1.visibility = View.VISIBLE
-//            // Set the text color of txtMessage based on result
-//            binding.txtMessage.text = response.result
-//            if (result == "Not Verified") {
-//                binding.txtMessage.setTextColor(Color.RED)
-//            } else {
-//                binding.txtMessage.setTextColor(Color.GREEN)
-//            }
-//            binding.txtMessage.visibility = View.VISIBLE
-//        }
 
         runOnUiThread {
             binding.txtMessage1.text = coloredMessage
@@ -377,14 +250,13 @@ class BarcodeScan : AppCompatActivity() {
                 binding.txtMessage.setTextColor(Color.RED)
             } else {
                 binding.txtMessage.text = "$result. Verified" // Add "Verified" explicitly to the displayed result
-                binding.txtMessage.setTextColor(Color.GREEN) // Set text color to green for verified results
+                binding.txtMessage.setTextColor(Color.parseColor("#018749")) // Set text color to dark green for the "Verified" part
             }
 
             binding.txtMessage.visibility = View.VISIBLE
         }
-
-
     }
+
 
 
     private fun showToast(message: String) {
@@ -415,6 +287,54 @@ class BarcodeScan : AppCompatActivity() {
             }
         })
     }
+//    private fun getCount(barcode: String) {
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl("https://nodei.ssccglpinnacle.com/")
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .client(OkHttpClient.Builder().build())
+//            .build()
+//        val api = retrofit.create(ApiService::class.java)
+//        val call = api.getCount(CountRequest(barcode))
+//        call.enqueue(object : Callback<CountResponse> {
+//            override fun onResponse(call: Call<CountResponse>, response: Response<CountResponse>) {
+//                binding.txtMessage1.text = ""
+//                if (response.isSuccessful) {
+//                    val count = response.body()?.count ?: 0
+//
+//                    val message = if (count <= 5) {
+//                        "Barcode scanned $count times "
+//                    } else {
+//                        "Barcode scanned $count time(s) so this book may be doubtful,contact the publisher support@ssccglpinnacle.com"
+//                    }
+//                    val spannable = SpannableString(message)
+//                    if (count <= 5) {
+//                        spannable.setSpan(
+//                            ForegroundColorSpan(Color.GREEN),
+//                            message.indexOf(""),
+//                            message.indexOf("") + "".length,
+//                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+//                        )
+//                    } else {
+//                        spannable.setSpan(
+//                            ForegroundColorSpan(Color.RED),
+//                            message.indexOf("doubtful"),
+//                            message.length,
+//                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+//                        )
+//                    }
+//                    runOnUiThread {
+//                        binding.txtCount.text = spannable
+//                        binding.txtCount.visibility = View.VISIBLE
+//                    }
+//                }
+//            }
+//            override fun onFailure(call: Call<CountResponse>, t: Throwable) {
+//                t.printStackTrace()
+//                showToast("Failed to connect to server count : ${t.message}")
+//            }
+//        })
+//    }
+
     private fun getCount(barcode: String) {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://nodei.ssccglpinnacle.com/")
@@ -430,23 +350,18 @@ class BarcodeScan : AppCompatActivity() {
                     val count = response.body()?.count ?: 0
 
                     val message = if (count <= 5) {
-                        "Barcode scanned $count times "
+                        "Barcode scanned $count times"
                     } else {
-                        "Barcode scanned $count times so it is doubtful"
+                        "Barcode scanned $count time(s) so this book may be doubtful, contact the publisher support@ssccglpinnacle.com"
                     }
                     val spannable = SpannableString(message)
-                    if (count <= 5) {
-                        spannable.setSpan(
-                            ForegroundColorSpan(Color.GREEN),
-                            message.indexOf(""),
-                            message.indexOf("") + "".length,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                    } else {
+                    if (count > 5) {
+                        val start = message.indexOf("doubtful")
+                        val end = start + "doubtful".length
                         spannable.setSpan(
                             ForegroundColorSpan(Color.RED),
-                            message.indexOf("doubtful"),
-                            message.length,
+                            start,
+                            end,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                         )
                     }
@@ -456,12 +371,13 @@ class BarcodeScan : AppCompatActivity() {
                     }
                 }
             }
+
             override fun onFailure(call: Call<CountResponse>, t: Throwable) {
-                t.printStackTrace()
-                showToast("Failed to connect to server count : ${t.message}")
+                // Handle failure
             }
         })
     }
+
 
 
 //    private fun getCount(barcode: String) {
